@@ -18,7 +18,7 @@ git_commit: ./build/main.o ./build/git_commands.o
 run:
 	./git_commit
 
-install: main
+install: git_commit
 	install -m 755 git_commit $(BIN)/git_commit
 
 clean:

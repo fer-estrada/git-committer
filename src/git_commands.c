@@ -41,7 +41,7 @@ int git_push() {
     int push = system("git push");
 
     if (push == 0)
-        printf("pushed to source");
+        printf("pushed to source\n");
     else
         fprintf(stderr, "failed to push\n%d", push);
 
