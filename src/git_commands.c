@@ -18,7 +18,7 @@ int git_commit(char message[]) {
     if (call == 0)
         printf("git committed\n");
     else
-        printf("failed to perform commit\n%d", call);
+        fprintf(stderr, "failed to perform commit\n%d", call);
 
     return 0;
 }
@@ -29,7 +29,7 @@ int git_push() {
     if (push == 0)
         printf("pushed to source");
     else
-        printf("failed to push\n%d", push);
+        fprintf(stderr, "failed to push\n%d", push);
 
     return 0;
 }

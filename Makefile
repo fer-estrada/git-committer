@@ -15,3 +15,5 @@ main: ./build/main.o ./build/git_commands.o
 
 clean:
 	rm -rf ./build/* ./git_commit
+
+.PHONY: all dev clean

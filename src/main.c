@@ -8,13 +8,12 @@ int main() {
 
     int git_add = system("git add .");
     if (git_add != 0) {
-        printf("failed to add files lol idiot\n");
+        fprintf(stderr, "failed to add files lol idiot\n");
     } else {
         printf("git added .\n");
     }
 
     printf("commit message: ");
-    scanf("%255s", commit_message);
     fgets(commit_message, 255, stdin);
     git_commit(commit_message);
 
