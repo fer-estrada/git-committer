@@ -15,10 +15,11 @@ int main() {
 
     printf("commit message: ");
     scanf("%255s", commit_message);
+    fgets(commit_message, 255, stdin);
     git_commit(commit_message);
 
     printf("push to repo ? (y/n): ");
-    scanf(" %c", &choice);
+    fgets(&choice, 2, stdin);
         switch(choice) {
             case 'y':
                 git_push();
