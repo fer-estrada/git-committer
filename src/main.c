@@ -31,7 +31,7 @@ int main() {
                 printf("push to repo ? (y/n): ");
                 continue;
         }
-        return 0;
+        break;
     }
 
     printf("thanks for using git committer :D");
