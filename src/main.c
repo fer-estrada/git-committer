@@ -20,21 +20,20 @@ int main() {
     while(1) {
         fgets(&choice, 2, stdin);
 
-        switch(choice) {
-            case 'y':
-                git_push();
-                break;
-            case 'n':
-                printf("commits were not pushed\n");
-                break;
-            default:
-                printf("invalid input try again\n");
-                printf("push to repo ? (y/n): ");
+        if(choice == 'y') {
+            git_push();
+            break;
+        } else if(choice == 'n') {
+            printf("commits were not pushed\n");
+            break;
+        } else {
+            printf("invalid input try again\n");
+            printf("push to repo ? (y/n): ");
 
-                int c;
-                while ((c = getchar()) != '\n' && c != EOF);
-        }
-    }
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+        };
+    };
 
     printf("\nthanks for using git committer :D\n");
 
