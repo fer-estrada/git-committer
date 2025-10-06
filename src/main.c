@@ -35,7 +35,7 @@ int main() {
         };
     };
 
-    printf("\nthanks for using git committer :D\n");
+    printf("thanks for using git committer :D\n");
 
     return 0;
 }
