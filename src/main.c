@@ -18,17 +18,17 @@ int main() {
     git_commit(commit_message);
 
     printf("push to repo ? (y/n): ");
-    while(scanf("%c", &choice) == 1) {
-        if (choice == 'y') {
-            git_push();
-            break;
-        }
-        else if (choice == 'n') {
-            printf("commits were not pushed\n");
-            break;
-        } else {
-            printf("invalid input try again\n");
-            continue;
+    while (scanf("%c", &choice) == 1) {
+        switch(choice) {
+            case 'y':
+                git_push();
+                break;
+            case 'n':
+                printf("commits were not pushed\n");
+                break;
+            default:
+                printf("invalid input try again\n");
+                continue;
         }
     }
 
