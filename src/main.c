@@ -4,14 +4,12 @@
 
 int main() {
     char commit_message[256];
+    char files_to_add[256];
     char choice;
 
-    int git_add = system("git add .");
-    if (git_add != 0) {
-        fprintf(stderr, "failed to add files lol idiot\n");
-    } else {
-        printf("git added .\n");
-    }
+    printf("which files to add: ");
+    fgets(files_to_add, 255, stdin);
+    git_add(files_to_add);
 
     printf("commit message: ");
     fgets(commit_message, 255, stdin);
