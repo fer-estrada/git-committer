@@ -30,6 +30,7 @@ int main() {
                 printf("invalid input try again\n");
                 continue;
         }
+        return 0;
     }
 
     printf("thanks for using git committer :D");
