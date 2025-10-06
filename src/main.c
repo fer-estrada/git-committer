@@ -29,7 +29,7 @@ int main() {
                 printf("push to repo ? (y/n): ");
         }
 
-    printf("thanks for using git committer :D\n");
+    printf("\nthanks for using git committer :D\n");
 
     return 0;
 }
