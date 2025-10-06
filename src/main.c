@@ -21,11 +21,11 @@ int main() {
     while(scanf("%c", &choice) == 1) {
         if (choice == 'y') {
             git_push();
-            return 0;
+            break;
         }
         else if (choice == 'n') {
             printf("commits were not pushed\n");
-            return 0;
+            break;
         } else {
             printf("invalid input try again\n");
             continue;
