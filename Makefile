@@ -13,7 +13,10 @@ dev: clean main
 main: ./build/main.o ./build/git_commands.o
 	$(CC) ./build/main.o ./build/git_commands.o -o git_commit
 
+run:
+	./git_commit
+
 clean:
 	rm -rf ./build/* ./git_commit
 
-.PHONY: all dev clean
+.PHONY: all dev clean run
