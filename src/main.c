@@ -28,6 +28,7 @@ int main() {
                 break;
             default:
                 printf("invalid input try again\n");
+                printf("push to repo ? (y/n): ");
                 continue;
         }
         return 0;
