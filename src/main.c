@@ -16,7 +16,10 @@ int main() {
     git_commit(commit_message);
 
     printf("push to repo ? (y/n): ");
-    fgets(&choice, 2, stdin);
+
+    while(1) {
+        fgets(&choice, 2, stdin);
+
         switch(choice) {
             case 'y':
                 git_push();
@@ -27,7 +30,11 @@ int main() {
             default:
                 printf("invalid input try again\n");
                 printf("push to repo ? (y/n): ");
+
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
         }
+    }
 
     printf("\nthanks for using git committer :D\n");
 
