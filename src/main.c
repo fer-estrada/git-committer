@@ -19,11 +19,14 @@ int main() {
 
     printf("push to repo ? (y/n): ");
     while(scanf("%c", &choice) == 1) {
-        if (choice == 'y')
+        if (choice == 'y') {
             git_push();
-        else if (choice == 'n')
+            return 0;
+        }
+        else if (choice == 'n') {
             printf("commits were not pushed\n");
-        else {
+            return 0;
+        } else {
             printf("invalid input try again\n");
             continue;
         }
