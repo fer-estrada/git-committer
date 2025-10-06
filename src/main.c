@@ -18,7 +18,8 @@ int main() {
     git_commit(commit_message);
 
     printf("push to repo ? (y/n): ");
-    while (scanf("%c", &choice)) {
+    scanf("%c", &choice);
+    while (choice) {
         switch(choice) {
             case 'y':
                 git_push();
