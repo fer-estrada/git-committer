@@ -13,6 +13,7 @@ first clone this repo down using your preferred method, then cd into it
 
 then just run
 ```
+mkdir build
 make
 sudo make install
 ```
