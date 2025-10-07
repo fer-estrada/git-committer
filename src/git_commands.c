@@ -7,8 +7,7 @@ int git_add(char files[]) {
     sprintf(add, "git add %s", files);
 
     int add_files = system(add);
-
-    if (add_files == 0)
+    if(add_files == 0)
         printf("files added succesfully\n");
     else
         fprintf(stderr, "failed to add files\n%d", add_files);
@@ -20,7 +19,7 @@ int git_commit(char message[]) {
     char commit[512];
     
     for (int i = 0; message[i] != '\0'; i++) {
-        if (message[i] == '\n') {
+        if(message[i] == '\n') {
             message [i] = '\0';
             break;
         }
@@ -29,8 +28,7 @@ int git_commit(char message[]) {
     sprintf(commit, "git commit -m \"%s\"", message);
 
     int commit_changes = system(commit);
-
-    if (commit_changes == 0)
+    if(commit_changes == 0)
         printf("git committed\n");
     else
         fprintf(stderr, "failed to perform commit\n%d", commit_changes);
@@ -52,7 +50,7 @@ int git_merge_to_main(char branch_name[]) {
     if(return_to_branch != 0) {
         fprintf(stderr, "failed to return to branch");
         return 1;
-    }
+    };
 
     return 0;
 }

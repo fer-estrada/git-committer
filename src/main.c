@@ -20,55 +20,59 @@ int main() {
     git_commit(commit_message);
 
     branch = popen("git rev-parse --abbrev-ref HEAD", "r");
-    if (branch == NULL)
-        fprintf(stderr, "failed to read branch name\n");
-    if(fgets(output, sizeof(output), branch) != NULL) {
+    if(branch == NULL)
+        printf("failed to read branch name\n");
+    else if(fgets(output, sizeof(output), branch) == NULL)
+        printf("failed to read github output\n");
+    else {
         output[strcspn(output, "\n")] = 0;
 
-        if(strcmp(output, "HEAD") || strcmp(output, "main") == 0)
-            return 0;
-        else {
+        if(strcmp(output, "HEAD") != 0 && strcmp(output, "main") != 0) {
             branch_name = output;
-            printf("you are in a branch [%s], do you want to merge to main ? (y/n): ", branch_name);
+            printf("you are in a branch [%s], wanna merge to main ? (y/n): ", branch_name);
+
             while(1) {
-                fgets(&choice, 2, stdin);
+                if(fgets(&choice, 2, stdin) != 0)
+                    break;
 
                 if(choice == 'y') {
                     git_merge_to_main(branch_name);
                     break;
                 } else if(choice == 'n') {
-                    printf("remained in branch\n");
-                    break;
+                    printf("commits remained in branch [%s]\n", branch_name);
                 } else {
                     printf("invalid input try again\n");
-                    printf("you are in a branch [%s], do you want to merge to main ? (y/n): ", branch_name);
+                    printf("merge to main ? (y/n): ");
 
-                    int c;
+                    char c;
                     while((c = getchar()) != '\n' && c != EOF);
-                }
-            }
-        }
-    }
-
-    printf("push to repo ? (y/n): ");
-
-    while(1) {
-        fgets(&choice, 2, stdin);
-
-        if(choice == 'y') {
-            git_push();
-            break;
-        } else if(choice == 'n') {
-            printf("commits were not pushed\n");
-            break;
-        } else {
-            printf("invalid input try again\n");
-            printf("push to repo ? (y/n): ");
-
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);
+                };
+            };
         };
     };
+    pclose(branch);
+
+    if(strcmp(output, "HEAD") == 0 || strcmp(output, "main") == 0) {
+        printf("push to repo ? (y/n): ");
+
+        while(1) {
+            fgets(&choice, 2, stdin);
+
+            if(choice == 'y') {
+                git_push();
+                break;
+            } else if(choice == 'n') {
+                printf("commits were not pushed\n");
+                break;
+            } else {
+                printf("invalid input try again\n");
+                printf("push to repo ? (y/n): ");
+
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
+            };
+        };
+    }
 
     printf("thanks for using git committer :D\n");
 
