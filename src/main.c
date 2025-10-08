@@ -36,7 +36,9 @@ int main() {
                     break;
 
                 if(choice == 'y') {
-                    git_merge_to_main(branch_name);
+                    while (!git_merge_to_main(branch_name)) {
+                        git_merge_to_main(branch_name);
+                    };
                     break;
                 } else if(choice == 'n') {
                     printf("commits remained in branch [%s]\n", branch_name);
