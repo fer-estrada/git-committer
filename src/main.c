@@ -32,8 +32,7 @@ int main() {
             printf("you are in a branch [%s], wanna merge to main ? (y/n): ", branch_name);
 
             while(1) {
-                if(fgets(&choice, 2, stdin) != 0)
-                    break;
+                fgets(&choice, 2, stdin);
 
                 if(choice == 'y') {
                     git_merge_to_main(branch_name);

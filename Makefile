@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -g 
+CFLAGS = -Wall -g3 
 BIN = /usr/local/bin
 
 all: git_commit
@@ -13,7 +13,7 @@ reinstall: all install
 	$(CC) -c ./src/main.c -o ./build/main.o
 
 git_commit: ./build/main.o ./build/git_commands.o
-	$(CC) ./build/main.o ./build/git_commands.o -o git_commit
+	$(CC) ./build/main.o ./build/git_commands.o -o git_commit $(CFLAGS)
 
 run:
 	./git_commit
