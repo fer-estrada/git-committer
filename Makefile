@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -g3 
+CFLAGS = -Wall -g 
 BIN = /usr/local/bin
 
 all: git_commit
