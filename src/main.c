@@ -6,7 +6,6 @@
 int main() {
     char commit_message[256];
     char files_to_add[256];
-    char choice;
     FILE *branch;
     char output[256];
     char *branch_name;
@@ -32,6 +31,7 @@ int main() {
             printf("you are in a branch [%s], wanna merge to main ? (y/n): ", branch_name);
 
             while(1) {
+                char choice;
                 fgets(&choice, 2, stdin);
 
                 if(choice == 'y') {
@@ -55,6 +55,7 @@ int main() {
         printf("push to repo ? (y/n): ");
 
         while(1) {
+            char choice;
             fgets(&choice, 2, stdin);
 
             if(choice == 'y') {
