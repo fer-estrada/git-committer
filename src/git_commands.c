@@ -48,23 +48,13 @@ int git_merge_to_main(char branch_name[]) {
         return 1;
     };
 
-<<<<<<< HEAD
     sprintf(merge_call, "git merge %s", branch_name);
     merge = popen(merge_call, "w");
-=======
-    merge = popen("git merge main", "w");
->>>>>>> test
     if(merge == NULL)
         printf("failed to perform merge");
     else if(fgets(output, sizeof(output), merge) == NULL)
         printf("failed to read github output\n");
-<<<<<<< HEAD
-=======
-    else {
-        printf("starting merge");
-    }
     pclose(merge);
->>>>>>> test
 
     return 0;
 }
