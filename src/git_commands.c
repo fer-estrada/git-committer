@@ -40,6 +40,7 @@ int git_commit(char message[]) {
 int git_merge_to_main(char branch_name[]) {
     FILE *merge;
     char output[256];
+    char merge_call[256];
 
     int checkout_and_pull = system("git checkout main && git pull");
     if(checkout_and_pull != 0) {
@@ -47,18 +48,12 @@ int git_merge_to_main(char branch_name[]) {
         return 1;
     };
 
-    merge = popen("git merge main", "r");
+    sprintf(merge_call, "git merge %s", branch_name);
+    merge = popen(merge_call, "w");
     if(merge == NULL)
         printf("failed to perform merge");
     else if(fgets(output, sizeof(output), merge) == NULL)
         printf("failed to read github output\n");
-    else {
-        output[strcspn(output, "\n")] = 0;
-
-        if(strcmp(output, "conflict")) {
-
-        };
-    };
 
     return 0;
 }
