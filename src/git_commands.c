@@ -41,21 +41,25 @@ int git_merge_to_main(char branch_name[]) {
     FILE *merge;
     char output[256];
 
-    int checkout_and_pull = system("git checkout main && git pull");
-    if(checkout_and_pull != 0) {
-        fprintf(stderr, "failed to pull from repo/n");
-        return 1;
-    };
+    while (1) {
+        int checkout_and_pull = system("git checkout main && git pull");
+        if(checkout_and_pull != 0) {
+            fprintf(stderr, "failed to pull from repo/n");
+            return 1;
+            break;
+        };
 
-    merge = popen("git merge main", "w");
-    if(merge == NULL)
-        printf("failed to perform merge");
-    else if(fgets(output, sizeof(output), merge) == NULL)
-        printf("failed to read github output\n");
-    else {
-        printf("starting merge");
+        merge = popen("git merge main", "w");
+        if(merge == NULL) {
+            printf("failed to perform merge");
+            break;
+        } else if(fgets(output, sizeof(output), merge) == NULL) {
+            printf("failed to read github output\n");
+        } else {
+            printf("starting merge");
+        };
+        pclose(merge);
     }
-    pclose(merge);
 
     return 0;
 }
