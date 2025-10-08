@@ -51,7 +51,7 @@ int main() {
     };
     pclose(branch);
 
-    if(strcmp(output, "HEAD") == 0 || strcmp(output, "main") == 0) {
+    if(strcmp(branch_name, "main") || strcmp(branch_name, "HEAD")) {
         printf("push to repo ? (y/n): ");
 
         while(1) {
