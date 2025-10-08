@@ -1,6 +1,7 @@
 #include "git_commands.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int git_add(char files[]) {
     char add[256];
@@ -37,7 +38,8 @@ int git_commit(char message[]) {
 }
 
 int git_merge_to_main(char branch_name[]) {
-    char return_command[128];
+    FILE *merge;
+    char output[256];
 
     int checkout_and_pull = system("git checkout main && git pull");
     if(checkout_and_pull != 0) {
@@ -45,11 +47,17 @@ int git_merge_to_main(char branch_name[]) {
         return 1;
     };
 
-    sprintf(return_command, "git checkout \"%s\"", branch_name);
-    int return_to_branch = system(return_command);
-    if(return_to_branch != 0) {
-        fprintf(stderr, "failed to return to branch");
-        return 1;
+    merge = popen("git merge main", "r");
+    if(merge == NULL)
+        printf("failed to perform merge");
+    else if(fgets(output, sizeof(output), merge) == NULL)
+        printf("failed to read github output\n");
+    else {
+        output[strcspn(output, "\n")] = 0;
+
+        if(strcmp(output, "conflict")) {
+
+        };
     };
 
     return 0;
