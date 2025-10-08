@@ -47,18 +47,15 @@ int git_merge_to_main(char branch_name[]) {
         return 1;
     };
 
-    merge = popen("git merge main", "r");
+    merge = popen("git merge main", "w");
     if(merge == NULL)
         printf("failed to perform merge");
     else if(fgets(output, sizeof(output), merge) == NULL)
         printf("failed to read github output\n");
     else {
-        output[strcspn(output, "\n")] = 0;
-
-        if(strcmp(output, "conflict")) {
-
-        };
-    };
+        printf("starting merge");
+    }
+    pclose(merge);
 
     return 0;
 }
