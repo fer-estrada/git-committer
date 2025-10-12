@@ -80,58 +80,63 @@ int git_commit(const char *message) {
 }
 
 int git_merge_to_main(char **branch_name) {
-    char merge_call[256];
-    FILE *merge;
+    char cmd[256];
+    int res;
 
-    if(system("git checkout main && git pull") != 0) {
-        fprintf(stderr, "failed to pull from repo\n");
+    if(branch_name == NULL || strlen(*branch_name) == 0) {
+        fprintf(stderr, "sum wrong with dat branch name\n");
         return 1;
     };
 
-    sprintf(merge_call, "git merge %s", *branch_name);
-    merge = popen(merge_call, "r");
-    if(merge == NULL) {
-        fprintf(stderr, "failed to merge\n");
-        return 1;
+    if((res = run_command("git checkout main")) == 0) {
+        *branch_name = "main";
+    } else {
+        return res;
     };
 
-    int status = pclose(merge);
-    if(status != 0) {
-        int mergetool = system("git mergetool");
-        if (mergetool != 0) {
-            fprintf(stderr, "failure to open merge editor tool\n");
+    if((res = run_command("git pull")) != 0) return res;
+
+    snprintf(cmd, sizeof(cmd), "git merge %s", *branch_name);
+
+    res = run_command(cmd);
+    if(res != 0) {
+        printf("hey there's a merge conflict i'm gonna open the merge tool\n");
+        sleep(3);
+
+        if(run_command("git mergetool") != 0) {
+            fprintf(stderr, "failed to open merge tool");
             return 1;
         };
 
-        printf("were conflicts resolved ? (y/n): ");
+        char choice[16];
         while(1) {
-            int c;
-            while((c = getchar()) != '\n' && c != EOF);
-
-            char choice[64];
-            fgets(choice, sizeof(choice), stdin);
+            printf("were conflicts resolved ? (y/n): ");
+            if(!fgets(choice, sizeof(choice), stdin)) {
+                fprintf(stderr, "input error\n");
+                return 1;
+            };
 
             if(choice[0] == 'y') {
-                system("git commit --no-edit");
+                res = run_command("git_commit --no-edit");
                 break;
             } else if(choice[0] == 'n') {
-                system("git merge --abort");
+                res = run_command("git merge --abort");
                 break;
             } else {
-                printf("invalid input try again\n");
-                printf("(y/n): ");
+                printf("invalid input try again (y/n): ");
             };
         };
+    } else {
+        printf("merge completed succesfully\n");
     };
 
-    *branch_name = "main";
-    return 0;
+    return res;
 }
 
 int git_push() {
     int res = run_command("git push");
     if(res == 0) {
-        printf("pushed to source\n");
+        printf("pushed to sourese\n");
     };
 
     return res;
