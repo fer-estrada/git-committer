@@ -10,36 +10,46 @@ int git_add(char files[]) {
     int add_files = system(add);
     if(add_files == 0)
         printf("files added succesfully\n");
-    else
-        fprintf(stderr, "failed to add files\n%d", add_files);
+    else {
+        fprintf(stderr, "failed to add files\n%d\n", add_files);
+        return 1;
+    };
 
     return 0;
 }
 
 int git_commit(char message[]) {
     char commit[512];
-    
-    for (int i = 0; message[i] != '\0'; i++) {
-        if(message[i] == '\n') {
-            message [i] = '\0';
-            break;
-        }
-    };
+    char escaped[512];
+    int j = 0;
 
-    sprintf(commit, "git commit -m \"%s\"", message);
+    for(int i = 0; message[i] != '\0' && j < 510; i++) {
+        if(message[i] == '"') {
+            escaped[j++] = '\\';
+            escaped[j++] = '\"';
+        } else if(message[i] == '\n')
+            break;
+        else {
+            escaped[j++] = message[i];
+        };
+    };
+    escaped[j] = '\0';
+
+    sprintf(commit, "git commit -m \"%s\"", escaped);
 
     int commit_changes = system(commit);
     if(commit_changes == 0)
         printf("git committed\n");
-    else
-        fprintf(stderr, "failed to perform commit\n%d", commit_changes);
+    else {
+        fprintf(stderr, "failed to perform commit\n%d\n", commit_changes);
+        return 1;
+    }
 
     return 0;
 }
 
 int git_merge_to_main(char branch_name[]) {
     char merge_call[256];
-    char output[256];
     FILE *merge;
 
     if(system("git checkout main && git pull") != 0) {
@@ -54,18 +64,45 @@ int git_merge_to_main(char branch_name[]) {
         return 1;
     };
 
-    while(fgets(output, sizeof(output), merge) != NULL)
-        printf("%s", output);
-
     int status = pclose(merge);
-    return (status == 0) ? 0 : 1;
+    if(status != 0) {
+        int mergetool = system("git mergetool");
+        if (mergetool != 0) {
+            fprintf(stderr, "failure to open merge editor tool\n");
+            return 1;
+        };
+
+        printf("were conflicts resolved ? (y/n): ");
+        while(1) {
+            int c;
+            while((c = getchar()) != '\n' && c != EOF);
+
+            char choice[64];
+            fgets(choice, sizeof(choice), stdin);
+
+            if(choice[0] == 'y') {
+                system("git commit --no-edit");
+                break;
+            } else if(choice[0] == 'n') {
+                system("git merge --abort");
+                break;
+            } else {
+                printf("invalid input try again\n");
+                printf("(y/n): ");
+            };
+        };
+    };
+
+    return 0;
 }
 
 int git_push() {
     int push = system("git push");
 
-    if(push != 0)
+    if(push != 0) {
         fprintf(stderr, "failed to push\n%d", push);
+        return 1;
+    };
 
     return 0;
 }

@@ -31,20 +31,21 @@ int main() {
             printf("you are in a branch [%s], wanna merge to main ? (y/n): ", branch_name);
 
             while(1) {
-                char choice;
-                fgets(&choice, 2, stdin);
+                int c;
+                while((c = getchar()) != '\n' && c != EOF);
 
-                if(choice == 'y') {
+                char choice[64];
+                fgets(choice, 2, stdin);
+
+                if(choice[0] == 'y') {
                     git_merge_to_main(branch_name);
                     break;
-                } else if(choice == 'n') {
+                } else if(choice[0] == 'n') {
                     printf("commits remained in branch [%s]\n", branch_name);
+                    break;
                 } else {
                     printf("invalid input try again\n");
                     printf("merge to main ? (y/n): ");
-
-                    char c;
-                    while((c = getchar()) != '\n' && c != EOF);
                 };
             };
         };
@@ -55,21 +56,21 @@ int main() {
         printf("push to repo ? (y/n): ");
 
         while(1) {
-            char choice;
-            fgets(&choice, 2, stdin);
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
 
-            if(choice == 'y') {
+            char choice[64];
+            fgets(choice, 2, stdin);
+
+            if(choice[0] == 'y') {
                 git_push();
                 break;
-            } else if(choice == 'n') {
+            } else if(choice[0] == 'n') {
                 printf("commits were not pushed\n");
                 break;
             } else {
                 printf("invalid input try again\n");
                 printf("push to repo ? (y/n): ");
-
-                int c;
-                while ((c = getchar()) != '\n' && c != EOF);
             };
         };
     }
