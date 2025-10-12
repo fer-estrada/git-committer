@@ -100,7 +100,7 @@ int git_push() {
     int push = system("git push");
 
     if(push != 0) {
-        fprintf(stderr, "failed to push\n%d", push);
+        fprintf(stderr, "failed to push\n%d\n", push);
         return 1;
     };
 

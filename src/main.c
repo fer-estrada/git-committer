@@ -11,30 +11,30 @@ int main() {
     char *branch_name;
 
     printf("which files to add: ");
-    fgets(files_to_add, 255, stdin);
+    fgets(files_to_add, sizeof(files_to_add), stdin);
+    files_to_add[strcspn(files_to_add, "\n")] = 0;
     git_add(files_to_add);
 
     printf("commit message: ");
-    fgets(commit_message, 255, stdin);
+    fgets(commit_message, sizeof(commit_message), stdin);
     git_commit(commit_message);
 
     branch = popen("git rev-parse --abbrev-ref HEAD", "r");
-    if(branch == NULL)
-        printf("failed to read branch name\n");
-    else if(fgets(output, sizeof(output), branch) == NULL)
+    if(branch == NULL) {
+        fprintf(stderr, "failed to read branch name\n");
+        return 1;
+    } else if(fgets(output, sizeof(output), branch) == NULL) {
         printf("failed to read github output\n");
-    else {
+        return 1;
+    } else {
         output[strcspn(output, "\n")] = 0;
+        branch_name = output;
 
         if(strcmp(output, "HEAD") != 0 && strcmp(output, "main") != 0) {
-            branch_name = output;
             printf("you are in a branch [%s], wanna merge to main ? (y/n): ", branch_name);
 
+            char choice[64];
             while(1) {
-                int c;
-                while((c = getchar()) != '\n' && c != EOF);
-
-                char choice[64];
                 fgets(choice, 2, stdin);
 
                 if(choice[0] == 'y') {
@@ -52,7 +52,7 @@ int main() {
     };
     pclose(branch);
 
-    if(strcmp(branch_name, "main") || strcmp(branch_name, "HEAD")) {
+    if(branch_name != NULL && strcmp(branch_name, "main") == 0) {
         printf("push to repo ? (y/n): ");
 
         while(1) {
@@ -60,7 +60,7 @@ int main() {
             while ((c = getchar()) != '\n' && c != EOF);
 
             char choice[64];
-            fgets(choice, 2, stdin);
+            fgets(choice, sizeof(choice), stdin);
 
             if(choice[0] == 'y') {
                 git_push();
