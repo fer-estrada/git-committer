@@ -129,12 +129,10 @@ int git_merge_to_main(char **branch_name) {
 }
 
 int git_push() {
-    int push = system("git push");
-
-    if(push != 0) {
-        fprintf(stderr, "failed to push\n%d\n", push);
-        return 1;
+    int res = run_command("git push");
+    if(res == 0) {
+        printf("pushed to source\n");
     };
 
-    return 0;
+    return res;
 }
