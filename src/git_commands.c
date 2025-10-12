@@ -45,33 +45,38 @@ int git_add(const char *files) {
 }
 
 int git_commit(const char *message) {
-    char commit[512];
+    char cmd[512];
     char escaped[512];
+    int res;
     int j = 0;
 
-    for(int i = 0; message[i] != '\0' && j < 510; i++) {
+    if(message == NULL || strlen(message) == 0) {
+        fprintf(stderr, "empty commit message\n");
+        return 1;
+    };
+
+    for(int i = 0; message[i] != '\0' && j < (int)sizeof(escaped) - 2; i++) {
         if(message[i] == '"') {
-            escaped[j++] = '\\';
-            escaped[j++] = '\"';
-        } else if(message[i] == '\n')
+            if(j < (int)sizeof(escaped) - 2) {
+                escaped[j++] = '\\';
+                escaped[j++] = '\"';
+            };
+        } else if(message[i] == '\n') {
             break;
-        else {
+        } else {
             escaped[j++] = message[i];
         };
     };
     escaped[j] = '\0';
 
-    sprintf(commit, "git commit -m \"%s\"", escaped);
+    snprintf(cmd, sizeof(cmd), "git commit -m \"%s\"", message);
 
-    int commit_changes = system(commit);
-    if(commit_changes == 0)
+    res = run_command(cmd);
+    if(res == 0) {
         printf("git committed\n");
-    else {
-        fprintf(stderr, "failed to perform commit\n%d\n", commit_changes);
-        return 1;
-    }
+    };
 
-    return 0;
+    return res;
 }
 
 int git_merge_to_main(char **branch_name) {
