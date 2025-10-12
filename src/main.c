@@ -55,11 +55,8 @@ int main() {
     if(branch_name != NULL && strcmp(branch_name, "main") == 0) {
         printf("push to repo ? (y/n): ");
 
+        char choice[64];
         while(1) {
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);
-
-            char choice[64];
             fgets(choice, sizeof(choice), stdin);
 
             if(choice[0] == 'y') {
@@ -73,7 +70,7 @@ int main() {
                 printf("push to repo ? (y/n): ");
             };
         };
-    }
+    };
 
     printf("thanks for using git committer :D\n");
 
