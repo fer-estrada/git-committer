@@ -7,7 +7,7 @@ int main() {
     char files_to_add[256];
     char commit_message[256];
     FILE *branch = NULL;
-    char *branch_name = NULL;
+    char branch_name[256];
     int res = 0;
 
     printf("which files to add: ");
@@ -72,7 +72,7 @@ int main() {
         };
     };
 
-    if(branch_name != NULL && strcmp(branch_name, "main") == 0) {
+    if(strcmp(branch_name, "main") == 0) {
         printf("push to repo ? (y/n): ");
 
         fflush(stdout);
