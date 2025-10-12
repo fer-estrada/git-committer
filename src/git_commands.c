@@ -2,23 +2,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
-int git_add(char *files) {
-    char add[256];
-    sprintf(add, "git add %s", files);
-
-    int add_files = system(add);
-    if(add_files == 0)
-        printf("files added succesfully\n");
-    else {
-        fprintf(stderr, "failed to add files\n%d\n", add_files);
+static int run_command(const char *cmd) {
+    int status = system(cmd);
+    if(status == -1) {
+        perror("system");
         return 1;
     };
+
+    if(WIFEXITED(status)) {
+        int code = WEXITSTATUS(status);
+        if(code != 0) {
+            fprintf(stderr, "command failed\n%s\n(exit code: %d)\n", cmd, code);
+        }
+    } else {
+        fprintf(stderr, "failure to terminanate command properly\n%s\n", cmd);
+        return 1;
+    }
 
     return 0;
 }
 
-int git_commit(char *message) {
+int git_add(const char *files) {
+    char cmd[256];
+    int res;
+
+    if(files == NULL || strlen(files) == 0) {
+        fprintf(stderr, "no files added for git add\n");
+        return 1;
+    };
+
+    snprintf(cmd, sizeof(cmd), "git add %s", files);
+
+    res = run_command(cmd);
+    if(res == 0) {
+        printf("git files added\n");
+    };
+
+    return res;
+}
+
+int git_commit(const char *message) {
     char commit[512];
     char escaped[512];
     int j = 0;
