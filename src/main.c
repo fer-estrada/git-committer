@@ -58,7 +58,9 @@ int main() {
             choice[strcspn(choice, "\n")] = '\0';
 
             if(choice[0] == 'y') {
-                res = git_merge_to_main(&branch_name);
+                if((res = git_merge_to_main(branch_name)) == 0) {
+                    strcpy(branch_name, "main");
+                }
                 break;
             } else if(choice[0] == 'n') {
                 printf("commits remained in branch [%s]\n", branch_name);

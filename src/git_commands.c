@@ -79,24 +79,20 @@ int git_commit(const char *message) {
     return res;
 }
 
-int git_merge_to_main(char **branch_name) {
+int git_merge_to_main(const char *branch_name) {
     char cmd[256];
     int res;
 
-    if(branch_name == NULL || strlen(*branch_name) == 0) {
+    if(branch_name == NULL || strlen(branch_name) == 0) {
         fprintf(stderr, "sum wrong with dat branch name\n");
         return 1;
     };
 
-    if((res = run_command("git checkout main")) == 0) {
-        *branch_name = "main";
-    } else {
-        return res;
-    };
+    if((res = run_command("git checkout main")) != 0) return res;
 
     if((res = run_command("git pull")) != 0) return res;
 
-    snprintf(cmd, sizeof(cmd), "git merge %s", *branch_name);
+    snprintf(cmd, sizeof(cmd), "git merge %s", branch_name);
 
     res = run_command(cmd);
     if(res != 0) {
