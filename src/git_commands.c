@@ -48,7 +48,7 @@ int git_commit(char *message) {
     return 0;
 }
 
-int git_merge_to_main(char *branch_name) {
+int git_merge_to_main(char **branch_name) {
     char merge_call[256];
     FILE *merge;
 
@@ -57,7 +57,7 @@ int git_merge_to_main(char *branch_name) {
         return 1;
     };
 
-    sprintf(merge_call, "git merge %s", branch_name);
+    sprintf(merge_call, "git merge %s", *branch_name);
     merge = popen(merge_call, "r");
     if(merge == NULL) {
         fprintf(stderr, "failed to merge\n");
@@ -93,7 +93,7 @@ int git_merge_to_main(char *branch_name) {
         };
     };
 
-    branch_name = "main";
+    *branch_name = "main";
     return 0;
 }
 
