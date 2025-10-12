@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int git_add(char files[]) {
+int git_add(char *files) {
     char add[256];
     sprintf(add, "git add %s", files);
 
@@ -18,7 +18,7 @@ int git_add(char files[]) {
     return 0;
 }
 
-int git_commit(char message[]) {
+int git_commit(char *message) {
     char commit[512];
     char escaped[512];
     int j = 0;
@@ -48,7 +48,7 @@ int git_commit(char message[]) {
     return 0;
 }
 
-int git_merge_to_main(char branch_name[]) {
+int git_merge_to_main(char *branch_name) {
     char merge_call[256];
     FILE *merge;
 
@@ -93,6 +93,7 @@ int git_merge_to_main(char branch_name[]) {
         };
     };
 
+    branch_name = "main";
     return 0;
 }
 
